@@ -31,8 +31,12 @@ const options = {
 
 flatpickr('#datetime-picker', options);
 
-const timer = {
-  isActive: false,
+class Timer {
+  constructor({ onTick }) {
+    this.isActive = false;
+    this.onTick = onTick;
+  }
+
   start() {
     if (this.isActive) {
       return;
@@ -47,41 +51,38 @@ const timer = {
         return;
       }
 
-      const time = convertMs(diff);
-
-      addTimerOnPage(time);
+      const time = this.convertMs(diff);
+      this.onTick(time);
     }, 1000);
-  },
-};
+  }
 
-btnStart.addEventListener('click', () => {
-  timer.start();
-});
+  convertMs(ms) {
+    // Number of milliseconds per unit of time
+    const second = 1000;
+    const minute = second * 60;
+    const hour = minute * 60;
+    const day = hour * 24;
 
-function convertMs(ms) {
-  // Number of milliseconds per unit of time
-  const second = 1000;
-  const minute = second * 60;
-  const hour = minute * 60;
-  const day = hour * 24;
+    const days = this.addLeadingZero(Math.floor(ms / day));
+    const hours = this.addLeadingZero(Math.floor((ms % day) / hour));
+    const minutes = this.addLeadingZero(
+      Math.floor(((ms % day) % hour) / minute)
+    );
+    const seconds = this.addLeadingZero(
+      Math.floor((((ms % day) % hour) % minute) / second)
+    );
 
-  // Remaining days
-  const days = addLeadingZero(Math.floor(ms / day));
-  // Remaining hours
-  const hours = addLeadingZero(Math.floor((ms % day) / hour));
-  // Remaining minutes
-  const minutes = addLeadingZero(Math.floor(((ms % day) % hour) / minute));
-  // Remaining seconds
-  const seconds = addLeadingZero(
-    Math.floor((((ms % day) % hour) % minute) / second)
-  );
+    return { days, hours, minutes, seconds };
+  }
 
-  return { days, hours, minutes, seconds };
+  addLeadingZero(value) {
+    return String(value).padStart(2, '0');
+  }
 }
 
-function addLeadingZero(value) {
-  return String(value).padStart(2, '0');
-}
+const timer = new Timer({ onTick: addTimerOnPage });
+
+btnStart.addEventListener('click', timer.start.bind(timer));
 
 function addTimerOnPage({ days, hours, minutes, seconds }) {
   daysValue.textContent = `${days}`;
