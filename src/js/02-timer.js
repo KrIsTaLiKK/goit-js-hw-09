@@ -13,9 +13,6 @@ const refs = {
 let selectedDate = null;
 
 refs.btnStart.disabled = true;
-if (refs.btnStart.disabled) {
-  refs.btnStart.classList.add('is-not-active');
-}
 
 const options = {
   enableTime: true,
@@ -43,40 +40,50 @@ function setupOfSelectedDate(selectedDate, currentDate) {
         background: '#0B55F6',
       },
     });
-
     refs.btnStart.disabled = true;
-    if (refs.btnStart.disabled) {
-      refs.btnStart.classList.replace('is-active', 'is-not-active');
-    }
     return;
   }
 
   refs.btnStart.disabled = false;
-  if (!refs.btnStart.disabled) {
-    refs.btnStart.classList.replace('is-not-active', 'is-active');
-  }
+  // if (!refs.btnStart.disabled) {
+  //   refs.btnStart.classList.replace('is-not-active', 'is-active');
+  // }
 }
 
 class Timer {
-  constructor({ onTick, onCheckBtn }) {
+  constructor({ onTick }) {
     this.isActive = false;
     this.onTick = onTick;
-    this.onCheckBtn = onCheckBtn;
   }
 
   start() {
-    this.onCheckBtn();
+    refs.btnStart.disabled = true;
 
     if (this.isActive) {
       return;
     }
 
-    setInterval(() => {
+    let id = setInterval(() => {
       this.isActive = true;
       const finishTime = selectedDate.getTime();
       const currentTime = Date.now();
       const diff = finishTime - currentTime;
+      console.log('finishTime', finishTime);
+      console.log('currentTime', currentTime);
+      console.log('diff', diff);
+
       if (diff < 0) {
+        clearInterval(id);
+        Notify.info('Timer finished 🕑✔', {
+          position: 'center-top',
+          timeout: 2000,
+          clickToClose: true,
+          info: {
+            background: '#0B55F6',
+          },
+        });
+
+        refs.btnStart.disabled = false;
         return;
       }
 
@@ -108,7 +115,7 @@ class Timer {
   }
 }
 
-const timer = new Timer({ onTick: addTimerOnPage, onCheckBtn: checkBtn });
+const timer = new Timer({ onTick: addTimerOnPage });
 
 refs.btnStart.addEventListener('click', timer.start.bind(timer));
 
@@ -117,11 +124,4 @@ function addTimerOnPage({ days, hours, minutes, seconds }) {
   refs.hoursValue.textContent = `${hours}`;
   refs.minutesValue.textContent = `${minutes}`;
   refs.secondsValue.textContent = `${seconds}`;
-}
-
-function checkBtn() {
-  refs.btnStart.disabled = true;
-  if (refs.btnStart.disabled) {
-    refs.btnStart.classList.replace('is-active', 'is-not-active');
-  }
 }

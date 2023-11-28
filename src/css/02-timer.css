@@ -46,11 +46,11 @@ body {
   padding: 3px;
 }
 
-.is-active {
+/* .is-active {
   opacity: 1;
-}
+} */
 
-.is-not-active {
+button[disabled] {
   opacity: 0.5;
   cursor: default;
 }
