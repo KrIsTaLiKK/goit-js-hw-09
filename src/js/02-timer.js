@@ -58,12 +58,15 @@ function setupOfSelectedDate(selectedDate, currentDate) {
 }
 
 class Timer {
-  constructor({ onTick }) {
+  constructor({ onTick, onCheckBtn }) {
     this.isActive = false;
     this.onTick = onTick;
+    this.onCheckBtn = onCheckBtn;
   }
 
   start() {
+    this.onCheckBtn();
+
     if (this.isActive) {
       return;
     }
@@ -105,7 +108,7 @@ class Timer {
   }
 }
 
-const timer = new Timer({ onTick: addTimerOnPage });
+const timer = new Timer({ onTick: addTimerOnPage, onCheckBtn: checkBtn });
 
 refs.btnStart.addEventListener('click', timer.start.bind(timer));
 
@@ -114,4 +117,11 @@ function addTimerOnPage({ days, hours, minutes, seconds }) {
   refs.hoursValue.textContent = `${hours}`;
   refs.minutesValue.textContent = `${minutes}`;
   refs.secondsValue.textContent = `${seconds}`;
+}
+
+function checkBtn() {
+  refs.btnStart.disabled = true;
+  if (refs.btnStart.disabled) {
+    refs.btnStart.classList.replace('is-active', 'is-not-active');
+  }
 }

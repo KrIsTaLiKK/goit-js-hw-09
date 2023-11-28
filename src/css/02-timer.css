@@ -46,6 +46,10 @@ body {
   padding: 3px;
 }
 
+.is-active {
+  opacity: 1;
+}
+
 .is-not-active {
   opacity: 0.5;
   cursor: default;
@@ -57,10 +61,6 @@ button[disabled]::before {
 
 button[disabled]:hover {
   transform: translate(0);
-}
-
-.is-active {
-  opacity: 1;
 }
 
 .go-back-link-timer {
