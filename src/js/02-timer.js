@@ -23,7 +23,6 @@ const options = {
   onClose(selectedDates) {
     selectedDate = selectedDates[0];
     const currentDate = new Date();
-
     setupOfSelectedDate(selectedDate, currentDate);
   },
 };
@@ -41,13 +40,11 @@ function setupOfSelectedDate(selectedDate, currentDate) {
       },
     });
     refs.btnStart.disabled = true;
+
     return;
   }
 
   refs.btnStart.disabled = false;
-  // if (!refs.btnStart.disabled) {
-  //   refs.btnStart.classList.replace('is-not-active', 'is-active');
-  // }
 }
 
 class Timer {
@@ -68,9 +65,6 @@ class Timer {
       const finishTime = selectedDate.getTime();
       const currentTime = Date.now();
       const diff = finishTime - currentTime;
-      console.log('finishTime', finishTime);
-      console.log('currentTime', currentTime);
-      console.log('diff', diff);
 
       if (diff < 0) {
         clearInterval(id);

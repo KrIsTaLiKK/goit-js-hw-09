@@ -68,9 +68,9 @@ button[disabled]:hover {
 }
 
 button {
+  position: relative;
   height: 100%;
   width: 90px;
-  position: relative;
   display: inline-block;
   cursor: pointer;
   outline: none;
@@ -102,6 +102,7 @@ button::before {
     rgba(255, 255, 255, 0.1) 0px 16px 8px,
     rgba(255, 255, 255, 0.1) 0px 32px 16px;
   border-radius: inherit;
+  border-bottom: 2px solid #4f4fdf;
   transform: translate3d(0, 0.75em, -1em);
   transition: transform 0.15s, box-shadow 0.15s;
 }
