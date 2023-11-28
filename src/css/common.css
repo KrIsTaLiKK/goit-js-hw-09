@@ -17,31 +17,6 @@ img {
   max-width: 100%;
 }
 
-.timer {
-  display: flex;
-  gap: 20px;
-  text-align: center;
-}
-
-.label {
-  display: block;
-}
-
-.field {
-  position: relative;
-}
-
-.field span.value {
-  font-size: 36px;
-}
-
-.field span.label {
-  text-transform: uppercase;
-}
-
-.sign {
-  position: absolute;
-  top: -2px;
-  left: 114%;
-  font-size: 36px;
+a {
+  text-decoration: none;
 }

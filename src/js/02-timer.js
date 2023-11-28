@@ -1,35 +1,61 @@
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import { Notify } from 'notiflix';
 
-const btnStart = document.querySelector('button[data-start]');
-const daysValue = document.querySelector('span[data-days]');
-const hoursValue = document.querySelector('span[data-hours]');
-const minutesValue = document.querySelector('span[data-minutes]');
-const secondsValue = document.querySelector('span[data-seconds]');
+const refs = {
+  btnStart: document.querySelector('button[data-start]'),
+  daysValue: document.querySelector('span[data-days]'),
+  hoursValue: document.querySelector('span[data-hours]'),
+  minutesValue: document.querySelector('span[data-minutes]'),
+  secondsValue: document.querySelector('span[data-seconds]'),
+};
 
 let selectedDate = null;
 
-btnStart.disabled = true;
+refs.btnStart.disabled = true;
+if (refs.btnStart.disabled) {
+  refs.btnStart.classList.add('is-not-active');
+}
 
 const options = {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
+
   onClose(selectedDates) {
     selectedDate = selectedDates[0];
     const currentDate = new Date();
 
-    if (selectedDate < currentDate || selectedDate === currentDate) {
-      alert('Please choose a date in the future');
-      return;
-    }
-
-    btnStart.disabled = false;
+    setupOfSelectedDate(selectedDate, currentDate);
   },
 };
 
 flatpickr('#datetime-picker', options);
+
+function setupOfSelectedDate(selectedDate, currentDate) {
+  if (selectedDate < currentDate || selectedDate === currentDate) {
+    Notify.info('Please choose a date in the future', {
+      position: 'center-top',
+      timeout: 1500,
+      clickToClose: true,
+      info: {
+        background: '#0B55F6',
+      },
+    });
+
+    refs.btnStart.disabled = true;
+    if (refs.btnStart.disabled) {
+      refs.btnStart.classList.replace('is-active', 'is-not-active');
+    }
+    return;
+  }
+
+  refs.btnStart.disabled = false;
+  if (!refs.btnStart.disabled) {
+    refs.btnStart.classList.replace('is-not-active', 'is-active');
+  }
+}
 
 class Timer {
   constructor({ onTick }) {
@@ -57,7 +83,6 @@ class Timer {
   }
 
   convertMs(ms) {
-    // Number of milliseconds per unit of time
     const second = 1000;
     const minute = second * 60;
     const hour = minute * 60;
@@ -82,11 +107,11 @@ class Timer {
 
 const timer = new Timer({ onTick: addTimerOnPage });
 
-btnStart.addEventListener('click', timer.start.bind(timer));
+refs.btnStart.addEventListener('click', timer.start.bind(timer));
 
 function addTimerOnPage({ days, hours, minutes, seconds }) {
-  daysValue.textContent = `${days}`;
-  hoursValue.textContent = `${hours}`;
-  minutesValue.textContent = `${minutes}`;
-  secondsValue.textContent = `${seconds}`;
+  refs.daysValue.textContent = `${days}`;
+  refs.hoursValue.textContent = `${hours}`;
+  refs.minutesValue.textContent = `${minutes}`;
+  refs.secondsValue.textContent = `${seconds}`;
 }

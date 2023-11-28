@@ -5,13 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Countdown timer</title>
     <link rel="stylesheet" href="css/common.css" />
+    <link rel="stylesheet" href="css/02-timer.css" />
   </head>
   <body>
-    <p><a href="index.html">Go back</a></p>
+    <p><a class="go-back-link-timer" href="index.html">Go back</a></p>
 
-    <input type="text" id="datetime-picker" />
-    <button type="button" data-start>Start</button>
-
+    <div class="input-btn-wrapper">
+      <input type="text" id="datetime-picker" />
+      <button type="button" class="btn" data-start>Start</button>
+    </div>
     <div class="timer">
       <div class="field">
         <span class="value" data-days>00</span>
@@ -32,7 +34,6 @@
         <span class="label">Seconds</span>
       </div>
     </div>
-
     <script src="js/02-timer.js" type="module"></script>
   </body>
 </html>
